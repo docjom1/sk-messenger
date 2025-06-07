@@ -1,11 +1,8 @@
-import axios from "axios";
-
-// ✅ Create a custom Axios instance
 const API = axios.create({
-  baseURL: "https://sk-messenger-api.onrender.com/api", // Update for production later
+  baseURL: process.env.REACT_APP_API_URL, // ✅ correct
   headers: {
-    "Content-Type": "application/json", // Always send JSON
-  },
+    "Content-Type": "application/json"
+  }
 });
 
 // ✅ Automatically attach token to every request if it exists
