@@ -32,9 +32,10 @@ mongoose.connect(process.env.MONGO_URI, {
 
 // API Routes
 app.use("/api/auth", require("./routes/auth"));
-app.use("/api/messages", require("./routes/message"));
-app.use("/api/users", require("./routes/user"));
-app.use("/api/groups", require("./routes/group"));
+app.use("/api/users", require("./routes/users"));
+app.use("/api/messages", require("./routes/messages"));
+app.use("/api/groups", require("./routes/groups"));
+
 
 app.get("/", (req, res) => res.send("Server is live 🚀"));
 
