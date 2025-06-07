@@ -2,7 +2,7 @@ import axios from "axios";
 
 // ✅ Create a custom Axios instance
 const API = axios.create({
-  baseURL: "http://localhost:5000/api", // Update for production later
+  baseURL: "https://sk-messenger-api.onrender.com/api", // Update for production later
   headers: {
     "Content-Type": "application/json", // Always send JSON
   },
