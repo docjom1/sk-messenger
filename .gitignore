@@ -9,3 +9,5 @@ env.local
 .env.test
 .env.production
 env
+
+test
