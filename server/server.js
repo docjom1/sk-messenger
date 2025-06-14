@@ -15,27 +15,30 @@ const app = express();
 const server = http.createServer(app);
 
 // Middleware
-app.use(cors({
-  origin: "http://localhost:3000",
-  credentials: true,
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  allowedHeaders: ["Content-Type", "Authorization"]
-}));
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
 app.use(express.json());
 
 // MongoDB connection
-mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-}).then(() => console.log("✅ MongoDB Connected"))
-  .catch(err => console.error("❌ MongoDB Error:", err));
+mongoose
+  .connect(process.env.MONGO_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => console.log("✅ MongoDB Connected"))
+  .catch((err) => console.error("❌ MongoDB Error:", err));
 
 // API Routes
 app.use("/api/auth", require("./routes/auth"));
-app.use("/api/users", require("./routes/users"));
-app.use("/api/messages", require("./routes/messages"));
-app.use("/api/groups", require("./routes/groups"));
-
+app.use("/api/users", require("./routes/user"));
+app.use("/api/messages", require("./routes/message"));
+app.use("/api/groups", require("./routes/group"));
 
 app.get("/", (req, res) => res.send("Server is live 🚀"));
 
@@ -43,8 +46,8 @@ app.get("/", (req, res) => res.send("Server is live 🚀"));
 const io = socketIO(server, {
   cors: {
     origin: "http://localhost:3000",
-    methods: ["GET", "POST"]
-  }
+    methods: ["GET", "POST"],
+  },
 });
 
 const onlineUsers = new Map();
@@ -100,7 +103,7 @@ io.on("connection", (socket) => {
 
       if (isGroup) {
         const group = await Group.findById(groupId).populate("members");
-        group.members.forEach(member => {
+        group.members.forEach((member) => {
           const memberId = member._id.toString();
           if (memberId !== userId) {
             const targetSocket = onlineUsers.get(memberId);
